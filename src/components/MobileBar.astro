@@ -1,0 +1,63 @@
+---
+import { contact } from '../config/site';
+---
+
+<div class="mobile-bar" aria-hidden="false">
+  <a href={contact.phoneHref} class="mobile-bar__item">Sună</a>
+  <a href={contact.whatsappHref} class="mobile-bar__item">WhatsApp</a>
+  <a href="#contact" class="mobile-bar__item mobile-bar__item--accent">Formular</a>
+</div>
+
+<style>
+  .mobile-bar {
+    display: none;
+  }
+
+  @media (max-width: 1059px) {
+    .mobile-bar {
+      display: flex;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 150;
+      background: var(--color-navy);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: var(--shadow-mobile-bar);
+    }
+  }
+
+  .mobile-bar__item {
+    flex: 1;
+    text-align: center;
+    padding: 17px 0;
+    color: #fff;
+    font-weight: 700;
+    font-size: 15.5px;
+    border-right: 1px solid rgba(255, 255, 255, 0.15);
+    min-height: 44px;
+  }
+
+  .mobile-bar__item:last-child {
+    border-right: none;
+  }
+
+  .mobile-bar__item:hover {
+    color: #fff;
+  }
+
+  .mobile-bar__item--accent {
+    background: var(--color-accent-solid);
+    color: var(--color-on-accent-solid);
+  }
+
+  .mobile-bar__item--accent:hover {
+    color: var(--color-on-accent-solid);
+  }
+
+  @media (max-width: 1059px) {
+    :global(body) {
+      padding-bottom: var(--mobile-bar-height);
+    }
+  }
+</style>

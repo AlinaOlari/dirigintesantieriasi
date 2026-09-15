@@ -1,0 +1,129 @@
+---
+import { dsDomenii, rteDomenii } from '../data/domenii';
+---
+
+<section id="domenii" data-screen-label="Domenii autorizate" class="domenii">
+  <p class="section-eyebrow domenii__eyebrow">02 — AUTORIZĂRI</p>
+  <h2 class="domenii__title">Domenii profesionale autorizate ISC</h2>
+  <p class="domenii__subtitle">
+    Serviciile sunt prestate exclusiv în domeniile și limitele autorizărilor profesionale deținute.
+  </p>
+
+  <div class="domenii__grid">
+    <div class="domenii__card">
+      <div class="domenii__card-title">Diriginte de șantier</div>
+      <div class="domenii__count">6 DOMENII</div>
+      <div class="domenii__list">
+        {
+          dsDomenii.map((d) => (
+            <div>
+              <div class="domenii__code">{d.code}</div>
+              <div class="domenii__desc">{d.desc}</div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+    <div class="domenii__card">
+      <div class="domenii__card-title">Responsabil tehnic cu execuția — RTE</div>
+      <div class="domenii__count">3 DOMENII</div>
+      <div class="domenii__list">
+        {
+          rteDomenii.map((d) => (
+            <div>
+              <div class="domenii__code">{d.code}</div>
+              <div class="domenii__desc">{d.desc}</div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .domenii {
+    background: var(--color-navy);
+    border-radius: var(--radius-block);
+    padding: clamp(30px, 5vw, 60px);
+    margin-bottom: var(--section-gap);
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+    background-size: 26px 26px;
+  }
+
+  /* Pe fundal închis, accentul apare ca text în varianta -bright, nu -ink. */
+  .domenii__eyebrow {
+    color: var(--color-accent-bright);
+  }
+
+  .domenii__title {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: clamp(26px, 3.2vw, 38px);
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    margin: 0 0 14px;
+    color: #fff;
+    max-width: 22ch;
+  }
+
+  .domenii__subtitle {
+    font-size: 16.5px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0 0 38px;
+    max-width: 62ch;
+  }
+
+  .domenii__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 22px;
+  }
+
+  .domenii__card {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: var(--radius-card);
+    padding: 28px;
+  }
+
+  .domenii__card-title {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 18px;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+
+  .domenii__count {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--color-accent-bright);
+    letter-spacing: 0.04em;
+    margin-bottom: 20px;
+  }
+
+  .domenii__list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .domenii__code {
+    font-family: var(--font-mono);
+    color: #fff;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    margin-bottom: 3px;
+  }
+
+  .domenii__desc {
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 14.5px;
+    line-height: 1.5;
+  }
+</style>

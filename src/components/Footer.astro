@@ -1,0 +1,114 @@
+---
+import { contact, missingData } from '../config/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="footer" aria-label="Subsol">
+  <div class="footer__grid">
+    <div>
+      <div class="footer__brand">Adrian Olari</div>
+      <div class="footer__brand-text">Dirigenție de șantier · RTE<br />Consultanță tehnică · Iași</div>
+      <p class="footer__todo">{missingData.iscAuthorizationNumber}</p>
+      <p class="footer__todo">{missingData.companyLegalInfo}</p>
+    </div>
+    <div class="footer__col">
+      <div class="footer__label">CONTACT</div>
+      <a href={contact.phoneHref}>{contact.phoneDisplay}</a>
+      <a href={contact.emailHref}>{contact.email}</a>
+      <span class="footer__muted">Iași, România</span>
+    </div>
+    <div class="footer__col">
+      <div class="footer__label">NAVIGARE</div>
+      <a href="#servicii">Servicii</a>
+      <a href="#domenii">Domenii autorizate</a>
+      <a href="#lucrari">Lucrări</a>
+      <a href="#despre">Despre mine</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="footer__col">
+      <div class="footer__label">INFORMAȚII</div>
+      <a href="#confidentialitate">Politica de confidențialitate</a>
+      <a href="https://anpc.ro/ce-este-sal/" class="footer__muted">ANPC — SAL</a>
+      <a href="https://ec.europa.eu/consumers/odr" class="footer__muted">ANPC — SOL</a>
+    </div>
+  </div>
+</footer>
+<div class="footer__copyright">
+  <span>© {year} Olari Adrian Ionuț. Toate drepturile rezervate.</span>
+  <span id="confidentialitate" class="footer__copyright-tag">Specialist autorizat ISC · Iași</span>
+</div>
+
+<style>
+  .footer {
+    border-top: 1px solid rgba(23, 25, 29, 0.15);
+    padding: 40px 0 28px;
+  }
+
+  .footer__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 28px;
+  }
+
+  .footer__brand {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 17px;
+    color: var(--color-navy);
+    margin-bottom: 8px;
+  }
+
+  .footer__brand-text {
+    font-size: 14.5px;
+    color: var(--color-muted);
+    line-height: 1.6;
+  }
+
+  .footer__todo {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--color-accent-ink);
+    background: #fff;
+    border: 1px dashed rgba(227, 181, 5, 0.55);
+    padding: 6px 10px;
+    border-radius: 6px;
+    display: inline-block;
+    margin: 10px 8px 0 0;
+  }
+
+  .footer__col {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 15px;
+  }
+
+  .footer__label {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--color-muted);
+    letter-spacing: 0.06em;
+    margin-bottom: 2px;
+  }
+
+  .footer__muted {
+    color: var(--color-muted);
+  }
+
+  .footer__copyright {
+    border-top: 1px solid rgba(23, 25, 29, 0.1);
+    padding: 20px 0 28px;
+    font-size: 13.5px;
+    color: var(--color-muted);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    justify-content: space-between;
+  }
+
+  .footer__copyright-tag {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+  }
+</style>

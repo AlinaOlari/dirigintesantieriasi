@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import Credibility from '../components/Credibility.astro';
+import Services from '../components/Services.astro';
+import Domenii from '../components/Domenii.astro';
+import Lucrari from '../components/Lucrari.astro';
+import PentruCine from '../components/PentruCine.astro';
+import Colaborare from '../components/Colaborare.astro';
+import DeCe from '../components/DeCe.astro';
+import Despre from '../components/Despre.astro';
+import Contact from '../components/Contact.astro';
+import Footer from '../components/Footer.astro';
+import MobileBar from '../components/MobileBar.astro';
+---
+
+<BaseLayout>
+  <Header />
+  <div class="container">
+    <main id="main">
+      <Hero />
+      <Credibility />
+      <Services />
+      <Domenii />
+      <Lucrari />
+      <PentruCine />
+      <Colaborare />
+      <DeCe />
+      <Despre />
+      <Contact />
+    </main>
+    <Footer />
+  </div>
+  <MobileBar />
+</BaseLayout>

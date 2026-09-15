@@ -1,0 +1,387 @@
+---
+import { navLinks, scrollspySectionIds } from '../data/nav';
+import { contact } from '../config/site';
+---
+
+<header id="site-header" class="header">
+  <div class="container header__inner">
+    <a href="#acasa" class="header__brand">
+      <div class="header__logo">AO</div>
+      <div>
+        <div class="header__brand-name">ADRIAN OLARI</div>
+        <div class="header__brand-tag">Diriginte de șantier · Iași</div>
+      </div>
+    </a>
+
+    <nav class="header__nav" aria-label="Meniu principal">
+      {
+        navLinks.map((link) => (
+          <a href={link.href} data-nav-id={link.id} class="header__nav-link">
+            {link.label}
+          </a>
+        ))
+      }
+      <a href={contact.phoneHref} class="header__cta">
+        {contact.phoneDisplay}
+      </a>
+    </nav>
+
+    <button
+      id="hamburger-btn"
+      class="header__hamburger"
+      aria-label="Deschide meniul"
+      aria-expanded="false"
+      aria-controls="mobile-nav"
+    >
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<nav id="mobile-nav" class="mobile-nav" aria-label="Meniu mobil" hidden>
+  <div class="mobile-nav__top">
+    <div class="mobile-nav__brand">ADRIAN OLARI</div>
+    <button id="mobile-nav-close" class="mobile-nav__close" aria-label="Închide meniul">✕</button>
+  </div>
+  <div class="mobile-nav__links">
+    {
+      navLinks.map((link) => (
+        <a href={link.href} data-nav-id={link.id} class="mobile-nav__link">
+          {link.label}
+        </a>
+      ))
+    }
+  </div>
+  <div class="mobile-nav__actions">
+    <a href={contact.phoneHref} class="mobile-nav__call">Sună la {contact.phoneDisplay}</a>
+    <a href={contact.whatsappHref} class="mobile-nav__whatsapp">Scrie pe WhatsApp</a>
+  </div>
+</nav>
+
+<script define:vars={{ sectionIds: scrollspySectionIds }}>
+  const hamburgerBtn = document.getElementById('hamburger-btn');
+  const closeBtn = document.getElementById('mobile-nav-close');
+  const mobileNav = document.getElementById('mobile-nav');
+
+  function openMobileNav() {
+    if (!mobileNav || !hamburgerBtn) return;
+    mobileNav.hidden = false;
+    hamburgerBtn.setAttribute('aria-expanded', 'true');
+    hamburgerBtn.setAttribute('aria-label', 'Închide meniul');
+    document.body.style.overflow = 'hidden';
+    closeBtn?.focus();
+  }
+
+  function closeMobileNav() {
+    if (!mobileNav || !hamburgerBtn) return;
+    mobileNav.hidden = true;
+    hamburgerBtn.setAttribute('aria-expanded', 'false');
+    hamburgerBtn.setAttribute('aria-label', 'Deschide meniul');
+    document.body.style.overflow = '';
+    hamburgerBtn.focus();
+  }
+
+  hamburgerBtn?.addEventListener('click', () => {
+    const isOpen = hamburgerBtn.getAttribute('aria-expanded') === 'true';
+    isOpen ? closeMobileNav() : openMobileNav();
+  });
+  closeBtn?.addEventListener('click', closeMobileNav);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && mobileNav && !mobileNav.hidden) closeMobileNav();
+  });
+  mobileNav?.querySelectorAll('a[data-nav-id]').forEach((link) => {
+    link.addEventListener('click', closeMobileNav);
+  });
+
+  // Umbră/border pe header doar după ce pagina a fost derulată — fără listener de scroll:
+  // un sentinel de 1px la începutul paginii e observat, iar starea "scrolled" se comută
+  // când sentinelul iese din viewport.
+  const header = document.getElementById('site-header');
+  const sentinel = document.querySelector('.scroll-sentinel');
+  if (header && sentinel) {
+    new IntersectionObserver(
+      ([entry]) => header.classList.toggle('is-scrolled', !entry.isIntersecting),
+      { threshold: 0 },
+    ).observe(sentinel);
+  }
+
+  // Scrollspy pe bază de IntersectionObserver: o linie orizontală imaginară la 140px
+  // de vârful viewportului; secțiunea care o traversează devine activă.
+  const navAnchors = Array.from(document.querySelectorAll('a[data-nav-id]'));
+  const sections = sectionIds
+    .map((id) => document.getElementById(id))
+    .filter((el) => el !== null);
+
+  function setActive(id) {
+    navAnchors.forEach((a) => {
+      const isActive = a.dataset.navId === id;
+      a.classList.toggle('is-active', isActive);
+      if (isActive) {
+        a.setAttribute('aria-current', 'true');
+      } else {
+        a.removeAttribute('aria-current');
+      }
+    });
+  }
+
+  if (sections.length) {
+    const spy = new IntersectionObserver(
+      (entries) => {
+        const hit = entries.find((e) => e.isIntersecting);
+        if (hit) setActive(hit.target.id);
+      },
+      { rootMargin: '-140px 0px -100% 0px', threshold: 0 },
+    );
+    sections.forEach((el) => spy.observe(el));
+  }
+</script>
+
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    background: rgba(242, 241, 237, 0.88);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid transparent;
+    transition: border-color 150ms ease;
+  }
+
+  .header.is-scrolled {
+    border-bottom-color: var(--color-hairline);
+  }
+
+  .header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    height: var(--header-height-desktop);
+  }
+
+  @media (max-width: 1059px) {
+    .header__inner {
+      height: var(--header-height-mobile);
+    }
+  }
+
+  .header__brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--color-anthracite);
+    flex-shrink: 0;
+  }
+
+  .header__logo {
+    width: 44px;
+    height: 44px;
+    border-radius: 9px;
+    background: var(--color-navy);
+    border: 1.5px solid var(--color-accent-solid);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: #fff;
+    font-size: 16px;
+    letter-spacing: 0.02em;
+    flex-shrink: 0;
+  }
+
+  .header__brand-name {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: 0.01em;
+    line-height: 1.1;
+    color: var(--color-navy);
+  }
+
+  .header__brand-tag {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--color-muted);
+    letter-spacing: 0.02em;
+    margin-top: 2px;
+  }
+
+  .header__nav {
+    display: flex;
+    align-items: center;
+    gap: clamp(12px, 1.6vw, 26px);
+    min-width: 0;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  @media (max-width: 1059px) {
+    .header__nav {
+      display: none;
+    }
+  }
+
+  .header__nav-link {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--color-muted);
+    padding: 6px 0;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+  }
+
+  .header__nav-link:hover {
+    color: var(--color-accent-ink);
+  }
+
+  .header__nav-link.is-active {
+    color: var(--color-navy);
+    border-bottom-color: var(--color-accent-solid);
+  }
+
+  .header__cta {
+    background: var(--color-accent-solid);
+    color: var(--color-on-accent-solid);
+    padding: 12px 22px;
+    border-radius: 7px;
+    font-weight: 700;
+    font-size: 15px;
+    white-space: nowrap;
+    box-shadow: var(--shadow-header-cta);
+  }
+
+  .header__cta:hover {
+    background: var(--color-accent-solid-hover);
+    color: var(--color-on-accent-solid);
+  }
+
+  .header__hamburger {
+    display: none;
+    width: 48px;
+    height: 48px;
+    border-radius: 9px;
+    border: 1.5px solid rgba(23, 25, 29, 0.25);
+    background: #fff;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  .header__hamburger span {
+    width: 20px;
+    height: 2px;
+    background: var(--color-navy);
+    border-radius: 2px;
+  }
+
+  @media (max-width: 1059px) {
+    .header__hamburger {
+      display: flex;
+    }
+  }
+
+  .mobile-nav {
+    position: fixed;
+    inset: 0;
+    background: var(--color-navy);
+    z-index: 400;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  .mobile-nav[hidden] {
+    display: none;
+  }
+
+  @media (min-width: 1060px) {
+    .mobile-nav {
+      display: none !important;
+    }
+  }
+
+  .mobile-nav__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+  }
+
+  .mobile-nav__brand {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: #fff;
+    font-size: 19px;
+  }
+
+  .mobile-nav__close {
+    width: 48px;
+    height: 48px;
+    border-radius: 9px;
+    border: 1.5px solid rgba(255, 255, 255, 0.3);
+    background: transparent;
+    color: #fff;
+    font-size: 22px;
+    cursor: pointer;
+  }
+
+  .mobile-nav__links {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mobile-nav__link {
+    color: #fff;
+    font-size: 20px;
+    font-weight: 600;
+    padding: 17px 4px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  }
+
+  .mobile-nav__link:hover,
+  .mobile-nav__link.is-active {
+    color: var(--color-accent-bright);
+  }
+
+  .mobile-nav__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 24px;
+  }
+
+  .mobile-nav__call {
+    background: var(--color-accent-solid);
+    color: var(--color-on-accent-solid);
+    text-align: center;
+    padding: 17px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 17px;
+  }
+
+  .mobile-nav__call:hover {
+    color: var(--color-on-accent-solid);
+    background: var(--color-accent-solid-hover);
+  }
+
+  .mobile-nav__whatsapp {
+    border: 1.5px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+    text-align: center;
+    padding: 17px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 17px;
+  }
+
+  .mobile-nav__whatsapp:hover {
+    color: #fff;
+  }
+</style>

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://dirigintesantieriasi.ro/sitemap-index.xml

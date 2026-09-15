@@ -1,0 +1,75 @@
+---
+import { benefits } from '../data/benefits';
+---
+
+<section id="de-ce" aria-label="De ce să colaborăm" class="de-ce">
+  <p class="section-eyebrow">06 — ABORDARE</p>
+  <h2 class="section-title de-ce__title">Implicare tehnică reală, nu doar formală</h2>
+
+  <div class="de-ce__grid">
+    {
+      benefits.map((b) => (
+        <div class="de-ce__cell">
+          <div class="de-ce__cell-title">{b.title}</div>
+          <div class="de-ce__cell-text">{b.text}</div>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .de-ce {
+    padding-bottom: var(--section-gap);
+  }
+
+  .de-ce__title {
+    margin-bottom: 34px;
+  }
+
+  /*
+   * Coloane fixe (nu auto-fit): cu un număr de carduri care nu umple exact
+   * ultimul rând al unui grid fluid, track-urile goale rămân sizate de
+   * rândurile anterioare și lasă să se vadă fundalul containerului — un bloc
+   * gri urât. 3 → 2 → 1 coloane împarte cele 6 beneficii exact, pe orice lățime.
+   * Fiecare card are propria linie de sus (nu un fundal comun expus prin gap),
+   * fără divizor vertical — doar spațiu alb între coloane.
+   */
+  .de-ce__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 48px;
+    row-gap: 40px;
+  }
+
+  @media (max-width: 1059px) {
+    .de-ce__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 639px) {
+    .de-ce__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .de-ce__cell {
+    border-top: 2px solid var(--color-navy);
+    padding-top: 20px;
+  }
+
+  .de-ce__cell-title {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 17px;
+    color: var(--color-navy);
+    margin-bottom: 7px;
+  }
+
+  .de-ce__cell-text {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--color-muted);
+  }
+</style>

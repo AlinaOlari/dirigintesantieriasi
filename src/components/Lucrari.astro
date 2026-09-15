@@ -1,0 +1,99 @@
+---
+import { Image } from 'astro:assets';
+import { lucrari } from '../data/lucrari';
+---
+
+<section id="lucrari" data-screen-label="Lucrări" class="lucrari">
+  <p class="section-eyebrow">03 — LUCRĂRI</p>
+  <h2 class="section-title lucrari__title">Tipuri de lucrări urmărite tehnic</h2>
+  <p class="section-subtitle lucrari__subtitle">
+    Construcții civile, hale industriale, lucrări edilitare și infrastructură — în municipiul și județul Iași.
+  </p>
+
+  <div class="lucrari__grid">
+    {
+      lucrari.map((w) => (
+        <figure class="lucrari__figure">
+          <div class="lucrari__image-frame">
+            <Image
+              src={w.src}
+              alt={w.alt}
+              widths={[400, 675]}
+              sizes="(max-width: 1059px) 50vw, 380px"
+              loading="lazy"
+              class="lucrari__image"
+            />
+          </div>
+          <figcaption class="lucrari__caption">
+            <div class="lucrari__caption-title">{w.title}</div>
+            <div class="lucrari__caption-meta">{w.meta}</div>
+          </figcaption>
+        </figure>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .lucrari {
+    padding-bottom: var(--section-gap);
+  }
+
+  .lucrari__title {
+    max-width: 22ch;
+  }
+
+  .lucrari__subtitle {
+    margin-bottom: 36px;
+  }
+
+  .lucrari__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 18px;
+  }
+
+  .lucrari__figure {
+    margin: 0;
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid var(--color-hairline);
+    transition: border-color 150ms ease;
+  }
+
+  .lucrari__figure:hover {
+    border-color: rgba(23, 25, 29, 0.3);
+  }
+
+  .lucrari__image-frame {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: #e5e3dc;
+  }
+
+  .lucrari__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .lucrari__caption {
+    padding: 16px 18px 18px;
+  }
+
+  .lucrari__caption-title {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--color-navy);
+    margin-bottom: 4px;
+  }
+
+  .lucrari__caption-meta {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    color: var(--color-muted);
+    letter-spacing: 0.02em;
+  }
+</style>

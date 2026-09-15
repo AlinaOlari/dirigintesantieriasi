@@ -1,0 +1,70 @@
+/**
+ * Design tokens. Paletă: „Grafit & galben tehnic".
+ * Breakpoint-ul mobil (1060px) e implementat prin media queries CSS peste tot
+ * unde apare — nu există un token dedicat pentru el fiindcă `@custom-media` nu
+ * e disponibil fără un plugin PostCSS suplimentar; pragul folosit consecvent
+ * în toate componentele este `@media (max-width: 1059px)`.
+ */
+:root {
+  /* Culori de bază */
+  --color-navy: #17191d;
+  --color-tech-blue: #2c3138;
+  --color-anthracite: #2a2c30;
+  --color-muted: #62656d;
+  --color-muted-on-navy: #acb0b8;
+  --color-error: #b3261e;
+  --color-success: #1e7a4b;
+  --color-bg: #f2f1ed;
+  --color-surface: #ffffff;
+  --color-hairline: rgba(23, 25, 29, 0.14);
+
+  /*
+   * Galbenul nu se comportă ca portocaliul din paleta veche — nu e un singur
+   * token, ci trei, în funcție de rol:
+   *  - accent-solid: fundaluri pline (butoane, bara de progres, bordurile
+   *    late). Textul peste accent-solid e mereu --color-on-accent-solid
+   *    (#17191D), niciodată alb — alb pe #E3B505 are ~1.7:1, ilegal.
+   *  - accent-ink: accent ca text mic pe fundal deschis (eyebrow-uri, cifre,
+   *    marker de listă, hover de link). Galbenul pur are ~2:1 pe fundal
+   *    deschis — nu-l folosi niciodată direct ca text acolo.
+   *  - accent-bright: accent ca text pe fundal închis (navy/grafit) — acolo
+   *    galbenul pur are contrast suficient.
+   */
+  --color-accent-solid: #e3b505;
+  --color-accent-solid-hover: #c99f04;
+  --color-on-accent-solid: #17191d;
+  /* #8A6A00 dă 4.49:1 pe noul --color-bg (#F2F1ED) — sub pragul de 4.5:1.
+     #896900 e la un pas de închidere (diferență imperceptibilă) și atinge 4.54:1. */
+  --color-accent-ink: #896900;
+  --color-accent-bright: #f0c419;
+
+  /* Tipografie */
+  --font-heading: 'Archivo', sans-serif;
+  --font-body: 'IBM Plex Sans', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+
+  /* Layout */
+  --container-max: 1240px;
+  --container-padding: clamp(16px, 4vw, 40px);
+  --section-gap: clamp(56px, 8vw, 96px);
+  --header-height-desktop: 84px;
+  --header-height-mobile: 72px;
+  --mobile-bar-height: 86px;
+
+  /* Radius */
+  --radius-button: 8px;
+  --radius-input: 8px;
+  --radius-card: 10px;
+  --radius-block: 14px;
+  --radius-pill: 100px;
+
+  /* Shadow */
+  --shadow-card-hover: 0 12px 32px rgba(23, 25, 29, 0.09);
+  --shadow-card-rest: 0 1px 3px rgba(23, 25, 29, 0.04);
+  --shadow-hero-image: 0 18px 50px rgba(23, 25, 29, 0.18);
+  --shadow-badge: 0 8px 22px rgba(23, 25, 29, 0.25);
+  --shadow-button-accent: 0 4px 14px rgba(227, 181, 5, 0.3);
+  --shadow-header-cta: 0 2px 8px rgba(227, 181, 5, 0.28);
+  --shadow-despre-image: 0 14px 40px rgba(23, 25, 29, 0.16);
+  --shadow-mobile-bar: 0 -4px 18px rgba(23, 25, 29, 0.25);
+}

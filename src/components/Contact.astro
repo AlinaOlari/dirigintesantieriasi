@@ -1,0 +1,597 @@
+---
+import { contact } from '../config/site';
+import { personTypeOptions, serviceOptions, serviceLabelsForPayload } from '../data/form-options';
+
+const formEndpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
+---
+
+<section id="contact" data-screen-label="Contact" class="contact">
+  <div class="contact__main">
+    <p class="section-eyebrow">08 — CONTACT</p>
+    <h2 class="contact__title">Trimite detaliile lucrării</h2>
+    <p class="contact__lead">
+      Completează informațiile de mai jos și revin cu un răspuns. Pentru situații urgente, sună direct.
+    </p>
+
+    <div id="contact-success" class="contact__success" role="status" hidden>
+      <div class="contact__success-title">Solicitarea a fost trimisă</div>
+      <p class="contact__success-text">
+        Mulțumesc. Am primit detaliile lucrării și revin cu un răspuns în cel mai scurt timp. Dacă este urgent, mă
+        poți suna direct.
+      </p>
+      <a href={contact.phoneHref} class="contact__success-btn">Sună la {contact.phoneDisplay}</a>
+    </div>
+
+    <form id="contact-form" novalidate class="contact__form">
+      <div class="contact__field">
+        <label for="f-name">Nume și prenume *</label>
+        <input id="f-name" name="name" type="text" autocomplete="name" />
+        <div id="f-name-error" class="contact__error" role="alert" hidden></div>
+      </div>
+
+      <div class="contact__field">
+        <label for="f-phone">Telefon *</label>
+        <input id="f-phone" name="phone" type="tel" autocomplete="tel" />
+        <div id="f-phone-error" class="contact__error" role="alert" hidden></div>
+      </div>
+
+      <div class="contact__field">
+        <label for="f-email">E-mail *</label>
+        <input id="f-email" name="email" type="email" autocomplete="email" />
+        <div id="f-email-error" class="contact__error" role="alert" hidden></div>
+      </div>
+
+      <div class="contact__field">
+        <label for="f-type">Persoană fizică / firmă</label>
+        <select id="f-type" name="personType">
+          {personTypeOptions.map((opt) => <option value={opt.value}>{opt.label}</option>)}
+        </select>
+      </div>
+
+      <div class="contact__field contact__field--full">
+        <label for="f-service">Serviciul solicitat *</label>
+        <select id="f-service" name="service">
+          {serviceOptions.map((opt) => <option value={opt.value}>{opt.label}</option>)}
+        </select>
+        <div id="f-service-error" class="contact__error" role="alert" hidden></div>
+      </div>
+
+      <div class="contact__field">
+        <label for="f-locality">Localitatea lucrării *</label>
+        <input id="f-locality" name="locality" type="text" placeholder="ex: Iași, Tomești, Miroslava" />
+        <div id="f-locality-error" class="contact__error" role="alert" hidden></div>
+      </div>
+
+      <div class="contact__field">
+        <label for="f-ctype">Tipul construcției</label>
+        <input id="f-ctype" name="constructionType" type="text" placeholder="ex: locuință, hală, bloc" />
+      </div>
+
+      <div class="contact__field">
+        <label for="f-stage">Stadiul actual al proiectului</label>
+        <input id="f-stage" name="stage" type="text" placeholder="ex: autorizație obținută, la roșu" />
+      </div>
+
+      <div class="contact__field">
+        <label for="f-date">Data estimată de începere</label>
+        <input id="f-date" name="startDate" type="date" />
+      </div>
+
+      <div class="contact__field contact__field--full">
+        <label for="f-msg">Mesaj</label>
+        <textarea id="f-msg" name="message" rows="4" placeholder="Descrie pe scurt lucrarea și ce anume ai nevoie."
+        ></textarea>
+      </div>
+
+      <div class="contact__field contact__field--full contact__consent">
+        <input id="f-consent" name="consent" type="checkbox" />
+        <label for="f-consent">Sunt de acord cu prelucrarea datelor pentru a fi contactat în legătură cu acest proiect. *</label>
+      </div>
+      <div id="f-consent-error" class="contact__error contact__field--full" role="alert" hidden></div>
+
+      <div class="contact__field--full">
+        <button type="submit" id="contact-submit" class="contact__submit">Trimite solicitarea</button>
+        <p id="contact-send-error" class="contact__send-error" role="alert" hidden></p>
+        <p class="contact__disclaimer">Datele sunt folosite exclusiv pentru a răspunde acestei solicitări.</p>
+      </div>
+    </form>
+  </div>
+
+  <aside class="contact__panel">
+    <h3 class="contact__panel-title">Contact direct</h3>
+    <div class="contact__panel-list">
+      <div>
+        <div class="contact__panel-label">TELEFON</div>
+        <a href={contact.phoneHref} class="contact__panel-phone">{contact.phoneDisplay}</a>
+      </div>
+      <div>
+        <div class="contact__panel-label">WHATSAPP</div>
+        <a href={contact.whatsappHrefPrefilled} class="contact__panel-link">{contact.phoneDisplay}</a>
+      </div>
+      <div>
+        <div class="contact__panel-label">E-MAIL</div>
+        <a href={contact.emailHref} class="contact__panel-link contact__panel-email">{contact.email}</a>
+      </div>
+      <div>
+        <div class="contact__panel-label">ZONĂ DE ACTIVITATE</div>
+        <div class="contact__panel-static">{contact.areaServed}</div>
+      </div>
+    </div>
+    <div class="contact__panel-actions">
+      <a href={contact.phoneHref} class="contact__panel-btn contact__panel-btn--accent">Sună acum</a>
+      <a href={contact.whatsappHrefPrefilled} class="contact__panel-btn">Scrie pe WhatsApp</a>
+      <a href={contact.emailHref} class="contact__panel-btn">Trimite e-mail</a>
+    </div>
+  </aside>
+</section>
+
+<script
+  define:vars={{
+    formEndpoint,
+    serviceLabelsForPayload,
+    mailtoAddress: contact.email,
+    fallbackMessage: `Trimiterea nu a reușit. Te rog sună la ${contact.phoneDisplay} sau scrie la ${contact.email}.`,
+  }}
+>
+  const form = document.getElementById('contact-form');
+  const successBox = document.getElementById('contact-success');
+  const submitBtn = document.getElementById('contact-submit');
+  const sendErrorEl = document.getElementById('contact-send-error');
+
+  if (form) {
+    const fields = {
+      name: document.getElementById('f-name'),
+      phone: document.getElementById('f-phone'),
+      email: document.getElementById('f-email'),
+      personType: document.getElementById('f-type'),
+      service: document.getElementById('f-service'),
+      locality: document.getElementById('f-locality'),
+      constructionType: document.getElementById('f-ctype'),
+      stage: document.getElementById('f-stage'),
+      startDate: document.getElementById('f-date'),
+      message: document.getElementById('f-msg'),
+      consent: document.getElementById('f-consent'),
+    };
+
+    let submitAttempted = false;
+    let sending = false;
+
+    function validate() {
+      const errors = {};
+      if (!fields.name.value.trim()) errors.name = 'Introdu numele și prenumele.';
+      if (!fields.phone.value.trim() || fields.phone.value.replace(/\D/g, '').length < 9)
+        errors.phone = 'Introdu un număr de telefon valid.';
+      if (!fields.email.value.trim() || !/^\S+@\S+\.\S+$/.test(fields.email.value))
+        errors.email = 'Introdu o adresă de e-mail validă.';
+      if (!fields.service.value) errors.service = 'Alege serviciul solicitat.';
+      if (!fields.locality.value.trim()) errors.locality = 'Introdu localitatea lucrării.';
+      if (!fields.consent.checked) errors.consent = 'Este necesar acordul privind prelucrarea datelor.';
+      return errors;
+    }
+
+    function renderErrors(errors) {
+      for (const key of Object.keys(fields)) {
+        const input = fields[key];
+        const errorEl = document.getElementById(`f-${key === 'personType' ? 'type' : key}-error`);
+        const message = errors[key];
+        if (!errorEl) continue;
+        if (message) {
+          errorEl.textContent = message;
+          errorEl.hidden = false;
+          input.setAttribute('aria-invalid', 'true');
+          input.setAttribute('aria-describedby', errorEl.id);
+          input.style.borderColor = 'var(--color-error)';
+        } else {
+          errorEl.hidden = true;
+          input.removeAttribute('aria-invalid');
+          input.removeAttribute('aria-describedby');
+          input.style.borderColor = '';
+        }
+      }
+    }
+
+    function setSending(value) {
+      sending = value;
+      submitBtn.disabled = value;
+      submitBtn.textContent = value ? 'Se trimite...' : 'Trimite solicitarea';
+      submitBtn.style.opacity = value ? '0.7' : '1';
+    }
+
+    function showSendError(message) {
+      if (!sendErrorEl) return;
+      if (message) {
+        sendErrorEl.textContent = message;
+        sendErrorEl.hidden = false;
+      } else {
+        sendErrorEl.hidden = true;
+      }
+    }
+
+    function showSuccess() {
+      form.hidden = true;
+      if (successBox) successBox.hidden = false;
+    }
+
+    async function send() {
+      const payload = {
+        Nume: fields.name.value,
+        Telefon: fields.phone.value,
+        Email: fields.email.value,
+        Tip: fields.personType.value === 'firma' ? 'Firmă' : 'Persoană fizică',
+        Serviciu: serviceLabelsForPayload[fields.service.value] || fields.service.value,
+        Localitate: fields.locality.value,
+        'Tip construcție': fields.constructionType.value,
+        Stadiu: fields.stage.value,
+        'Data începerii': fields.startDate.value,
+        Mesaj: fields.message.value,
+        _subject: 'Solicitare nouă de pe site — ' + (serviceLabelsForPayload[fields.service.value] || 'serviciu'),
+      };
+
+      if (!/^https?:\/\//.test(formEndpoint)) {
+        const body = Object.keys(payload)
+          .filter((k) => k[0] !== '_' && payload[k])
+          .map((k) => k + ': ' + payload[k])
+          .join('\n');
+        window.location.href =
+          'mailto:' + mailtoAddress + '?subject=' + encodeURIComponent(payload._subject) + '&body=' + encodeURIComponent(body);
+        setSending(false);
+        showSuccess();
+        return;
+      }
+
+      try {
+        const res = await fetch(formEndpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        if (!res.ok) throw new Error('bad status');
+        setSending(false);
+        showSuccess();
+      } catch (err) {
+        setSending(false);
+        showSendError(fallbackMessage);
+      }
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const errors = validate();
+      submitAttempted = true;
+      renderErrors(errors);
+
+      const firstInvalidKey = Object.keys(errors)[0];
+      if (firstInvalidKey) {
+        fields[firstInvalidKey]?.focus({ preventScroll: true });
+        return;
+      }
+
+      setSending(true);
+      showSendError(null);
+      send();
+    });
+
+    // După prima încercare, erorile se actualizează live la fiecare modificare.
+    Object.values(fields).forEach((field) => {
+      field.addEventListener('input', () => {
+        if (submitAttempted) renderErrors(validate());
+      });
+      field.addEventListener('change', () => {
+        if (submitAttempted) renderErrors(validate());
+      });
+    });
+  }
+</script>
+
+<style>
+  .contact {
+    display: grid;
+    grid-template-columns: 1.35fr 0.85fr;
+    gap: clamp(28px, 4vw, 44px);
+    padding-bottom: 64px;
+  }
+
+  @media (max-width: 1059px) {
+    .contact {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .contact__title {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: clamp(28px, 3.4vw, 40px);
+    letter-spacing: -0.015em;
+    margin: 0 0 10px;
+    color: var(--color-navy);
+  }
+
+  .contact__lead {
+    font-size: 16.5px;
+    line-height: 1.6;
+    color: var(--color-muted);
+    margin: 0 0 28px;
+    max-width: 52ch;
+  }
+
+  .contact__success {
+    background: #fff;
+    border: 1.5px solid var(--color-success);
+    border-left: 5px solid var(--color-success);
+    border-radius: var(--radius-card);
+    padding: 28px;
+  }
+
+  .contact__success[hidden] {
+    display: none;
+  }
+
+  .contact__success-title {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 19px;
+    color: var(--color-navy);
+    margin-bottom: 8px;
+  }
+
+  .contact__success-text {
+    font-size: 15.5px;
+    line-height: 1.6;
+    color: var(--color-anthracite);
+    margin: 0 0 18px;
+  }
+
+  .contact__success-btn {
+    background: var(--color-accent-solid);
+    color: var(--color-on-accent-solid);
+    padding: 13px 24px;
+    border-radius: 7px;
+    font-weight: 700;
+    font-size: 15px;
+    display: inline-block;
+  }
+
+  .contact__success-btn:hover {
+    color: var(--color-on-accent-solid);
+    background: var(--color-accent-solid-hover);
+  }
+
+  .contact__form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+
+  .contact__form[hidden] {
+    display: none;
+  }
+
+  @media (max-width: 1059px) {
+    .contact__form {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .contact__field--full {
+    grid-column: 1 / -1;
+  }
+
+  .contact__field label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-navy);
+    margin-bottom: 7px;
+  }
+
+  .contact__field input,
+  .contact__field select,
+  .contact__field textarea {
+    width: 100%;
+    padding: 14px 15px;
+    border-radius: var(--radius-input);
+    border: 1.5px solid rgba(23, 25, 29, 0.25);
+    font-size: 16px;
+    font-family: inherit;
+    background: #fff;
+    color: var(--color-anthracite);
+  }
+
+  .contact__field textarea {
+    resize: vertical;
+  }
+
+  .contact__field input:focus-visible,
+  .contact__field select:focus-visible,
+  .contact__field textarea:focus-visible {
+    outline: 2px solid var(--color-tech-blue);
+    outline-offset: 1px;
+    border-color: var(--color-tech-blue);
+  }
+
+  .contact__error {
+    color: var(--color-error);
+    font-size: 13.5px;
+    margin-top: 6px;
+    font-weight: 500;
+  }
+
+  .contact__error[hidden] {
+    display: none;
+  }
+
+  .contact__consent {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    background: #fff;
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-input);
+    padding: 16px;
+  }
+
+  .contact__consent input {
+    margin-top: 2px;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    accent-color: var(--color-accent-solid);
+  }
+
+  .contact__consent label {
+    font-size: 14.5px;
+    color: var(--color-anthracite);
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  .contact__submit {
+    background: var(--color-accent-solid);
+    color: var(--color-on-accent-solid);
+    border: none;
+    padding: 17px 34px;
+    border-radius: var(--radius-button);
+    font-weight: 700;
+    font-size: 16.5px;
+    font-family: inherit;
+    cursor: pointer;
+    box-shadow: var(--shadow-button-accent);
+    width: auto;
+  }
+
+  @media (max-width: 1059px) {
+    .contact__submit {
+      width: 100%;
+    }
+  }
+
+  .contact__submit:hover {
+    background: var(--color-accent-solid-hover);
+    color: var(--color-on-accent-solid);
+  }
+
+  .contact__submit:disabled {
+    cursor: not-allowed;
+  }
+
+  .contact__send-error[hidden] {
+    display: none;
+  }
+
+  .contact__send-error {
+    font-size: 14.5px;
+    color: var(--color-error);
+    font-weight: 500;
+    margin: 14px 0 0;
+    line-height: 1.6;
+  }
+
+  .contact__disclaimer {
+    font-size: 13.5px;
+    color: var(--color-muted);
+    margin: 14px 0 0;
+    line-height: 1.6;
+  }
+
+  .contact__panel {
+    background: var(--color-navy);
+    border-radius: 12px;
+    padding: 32px;
+    height: fit-content;
+    position: sticky;
+    top: 104px;
+  }
+
+  @media (max-width: 1059px) {
+    .contact__panel {
+      position: static;
+    }
+  }
+
+  .contact__panel-title {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 19px;
+    margin: 0 0 22px;
+    color: #fff;
+  }
+
+  .contact__panel-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-bottom: 26px;
+  }
+
+  .contact__panel-label {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--color-muted-on-navy);
+    letter-spacing: 0.06em;
+    margin-bottom: 4px;
+  }
+
+  .contact__panel-phone {
+    color: #fff;
+    font-size: 19px;
+    font-weight: 700;
+    font-family: var(--font-heading);
+  }
+
+  .contact__panel-phone:hover {
+    color: var(--color-accent-bright);
+  }
+
+  .contact__panel-link {
+    color: #fff;
+    font-size: 16.5px;
+    font-weight: 600;
+  }
+
+  .contact__panel-link:hover {
+    color: var(--color-accent-bright);
+  }
+
+  .contact__panel-email {
+    word-break: break-all;
+  }
+
+  .contact__panel-static {
+    color: #fff;
+    font-size: 16px;
+  }
+
+  .contact__panel-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .contact__panel-btn {
+    background: transparent;
+    color: #fff;
+    text-align: center;
+    padding: 15px;
+    border-radius: var(--radius-button);
+    font-weight: 700;
+    font-size: 15.5px;
+    border: 1.5px solid rgba(255, 255, 255, 0.32);
+  }
+
+  .contact__panel-btn:hover {
+    border-color: #fff;
+    color: #fff;
+  }
+
+  .contact__panel-btn--accent {
+    background: var(--color-accent-solid);
+    border-color: var(--color-accent-solid);
+    color: var(--color-on-accent-solid);
+  }
+
+  .contact__panel-btn--accent:hover {
+    background: var(--color-accent-solid-hover);
+    border-color: var(--color-accent-solid-hover);
+    color: var(--color-on-accent-solid);
+  }
+</style>

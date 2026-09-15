@@ -1,0 +1,223 @@
+---
+import { services } from '../data/services';
+---
+
+<section id="servicii" data-screen-label="Servicii" class="services">
+  <p class="section-eyebrow">01 — SERVICII</p>
+  <h2 class="section-title services__title">Servicii tehnice pentru beneficiari și executanți</h2>
+  <p class="section-subtitle">
+    Fiecare proiect are cerințe diferite. Serviciile sunt stabilite în funcție de tipul construcției, stadiul
+    lucrărilor și documentația tehnică.
+  </p>
+
+  <div class="services__grid">
+    {
+      services.map((svc) => (
+        <div class="services__card">
+          <div class="services__card-head">
+            <div class="services__num">{svc.num}</div>
+            <div class="services__tag">{svc.tag}</div>
+          </div>
+          <h3 class="services__card-title">{svc.title}</h3>
+          <p class="services__card-text">{svc.text}</p>
+          <ul class="services__list">
+            {svc.items.slice(0, 2).map((li) => (
+              <li>
+                <span aria-hidden="true">·</span>
+                {li}
+              </li>
+            ))}
+          </ul>
+          {svc.items.length > 2 && (
+            <details class="services__more">
+              <summary class="services__more-toggle">
+                <span class="services__more-label services__more-label--closed">Vezi toate activitățile</span>
+                <span class="services__more-label services__more-label--open">Ascunde activitățile</span>
+                <svg class="services__chevron" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+                  <path
+                    d="M3 5l4 4 4-4"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </summary>
+              <ul class="services__list services__list--more">
+                {svc.items.slice(2).map((li) => (
+                  <li>
+                    <span aria-hidden="true">·</span>
+                    {li}
+                  </li>
+                ))}
+              </ul>
+            </details>
+          )}
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .services {
+    padding-bottom: var(--section-gap);
+  }
+
+  .services__title {
+    max-width: 20ch;
+  }
+
+  .services__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 22px;
+  }
+
+  .services__card {
+    background: #fff;
+    border: 1px solid var(--color-hairline);
+    border-radius: 12px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--shadow-card-rest);
+    transition:
+      border-color 150ms ease,
+      box-shadow 150ms ease;
+  }
+
+  .services__card:hover {
+    border-color: rgba(23, 25, 29, 0.3);
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  .services__card-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  .services__num {
+    width: 34px;
+    height: 34px;
+    border-radius: var(--radius-input);
+    background: var(--color-navy);
+    color: #fff;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .services__tag {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: var(--color-muted);
+    line-height: 1.3;
+  }
+
+  .services__card-title {
+    font-family: var(--font-heading);
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin: 0 0 12px;
+    color: var(--color-navy);
+  }
+
+  .services__card-text {
+    font-size: 15.5px;
+    line-height: 1.65;
+    color: var(--color-anthracite);
+    margin: 0 0 20px;
+  }
+
+  .services__list {
+    margin: 0 0 22px;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+
+  .services__list li {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--color-anthracite);
+  }
+
+  .services__list li span {
+    color: var(--color-accent-ink);
+    font-weight: 700;
+    flex-shrink: 0;
+    line-height: 1.5;
+  }
+
+  .services__more {
+    margin-top: auto;
+    border-top: 1px solid rgba(23, 25, 29, 0.12);
+    padding-top: 18px;
+  }
+
+  .services__more-toggle {
+    list-style: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--color-tech-blue);
+  }
+
+  .services__more-toggle::-webkit-details-marker {
+    display: none;
+  }
+
+  .services__more-toggle:hover {
+    color: var(--color-accent-ink);
+  }
+
+  .services__more-toggle:focus-visible {
+    outline: 2px solid var(--color-tech-blue);
+    outline-offset: 2px;
+    border-radius: 3px;
+  }
+
+  .services__more-label--open {
+    display: none;
+  }
+
+  .services__more[open] .services__more-label--closed {
+    display: none;
+  }
+
+  .services__more[open] .services__more-label--open {
+    display: inline;
+  }
+
+  .services__chevron {
+    flex-shrink: 0;
+    transition: transform 150ms ease;
+  }
+
+  .services__more[open] .services__chevron {
+    transform: rotate(180deg);
+  }
+
+  .services__list--more {
+    margin: 14px 0 0;
+  }
+</style>

@@ -1,0 +1,92 @@
+---
+import { steps } from '../data/steps';
+---
+
+<section id="colaborare" data-screen-label="Cum colaborăm" class="colaborare">
+  <p class="section-eyebrow">05 — PROCES</p>
+  <h2 class="section-title colaborare__title">Un proces clar, de la prima discuție până la finalizare</h2>
+
+  <div class="colaborare__grid">
+    {
+      steps.map((st) => (
+        <div class="colaborare__step">
+          <div class="colaborare__num">{st.n}</div>
+          <div>
+            <div class="colaborare__step-title">{st.title}</div>
+            <div class="colaborare__step-text">{st.text}</div>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+
+  <a href="#contact" class="colaborare__cta">Discută proiectul tău</a>
+</section>
+
+<style>
+  .colaborare {
+    padding-bottom: var(--section-gap);
+  }
+
+  .colaborare__title {
+    max-width: 24ch;
+    margin-bottom: 36px;
+  }
+
+  .colaborare__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 26px;
+    margin-bottom: 36px;
+  }
+
+  .colaborare__step {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .colaborare__num {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: 15px;
+    color: var(--color-accent-ink);
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    border: 1.5px solid rgba(227, 181, 5, 0.4);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .colaborare__step-title {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 16.5px;
+    color: var(--color-navy);
+    margin-bottom: 6px;
+  }
+
+  .colaborare__step-text {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--color-muted);
+  }
+
+  .colaborare__cta {
+    background: var(--color-navy);
+    color: #fff;
+    padding: 16px 30px;
+    border-radius: var(--radius-button);
+    font-weight: 700;
+    font-size: 16px;
+    display: inline-block;
+  }
+
+  .colaborare__cta:hover {
+    background: var(--color-tech-blue);
+    color: #fff;
+  }
+</style>

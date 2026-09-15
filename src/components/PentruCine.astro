@@ -1,0 +1,62 @@
+---
+import { audiences } from '../data/audiences';
+---
+
+<section id="pentru-cine" aria-label="Pentru cine sunt serviciile" class="pentru-cine">
+  <p class="section-eyebrow">04 — CLIENȚI</p>
+  <h2 class="section-title pentru-cine__title">Pentru cine sunt serviciile</h2>
+
+  <div class="pentru-cine__grid">
+    {
+      audiences.map((a) => (
+        <div class="pentru-cine__card">
+          <h3 class="pentru-cine__card-title">{a.title}</h3>
+          <p class="pentru-cine__card-text">{a.text}</p>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .pentru-cine {
+    padding-bottom: var(--section-gap);
+  }
+
+  .pentru-cine__title {
+    margin-bottom: 34px;
+  }
+
+  .pentru-cine__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
+    gap: 18px;
+  }
+
+  .pentru-cine__card {
+    background: #fff;
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-card);
+    padding: 24px;
+    transition: border-color 150ms ease;
+  }
+
+  .pentru-cine__card:hover {
+    border-color: var(--color-accent-solid);
+  }
+
+  .pentru-cine__card-title {
+    font-family: var(--font-heading);
+    font-size: 17px;
+    font-weight: 700;
+    margin: 0 0 8px;
+    color: var(--color-navy);
+  }
+
+  .pentru-cine__card-text {
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--color-muted);
+    margin: 0;
+  }
+</style>
