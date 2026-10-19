@@ -5,6 +5,7 @@ import imgPiata from '../assets/images/lucrare-piata.webp';
 import imgTerminal from '../assets/images/lucrare-terminal.webp';
 import imgFundatii from '../assets/images/lucrare-fundatii.webp';
 import imgUtilitati from '../assets/images/lucrare-utilitati.webp';
+import imgBlocRediu from '../assets/images/lucrare-bloc-rediu.webp';
 
 export interface Lucrare {
   src: ImageMetadata;
@@ -50,5 +51,11 @@ export const lucrari: Lucrare[] = [
     alt: 'Cămin de vane pentru rețea de utilități în execuție',
     title: 'Rețele edilitare',
     meta: 'GOSPODĂRIE COMUNALĂ',
+  },
+  {
+    src: imgBlocRediu,
+    alt: 'Bloc de locuințe finalizat la exterior, Rediu, județul Iași',
+    title: 'Bloc de locuințe din Rediu, jud. Iași',
+    meta: 'CONSTRUCȚII CIVILE · JUD. IAȘI',
   },
 ];
