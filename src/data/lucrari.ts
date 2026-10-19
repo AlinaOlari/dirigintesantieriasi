@@ -14,8 +14,14 @@ export interface Lucrare {
   meta: string;
 }
 
-/** Cele 6 lucrări din secțiunea „Lucrări" — copy exact din fișierul de design. */
+/** Cele 7 lucrări din secțiunea „Lucrări". Primele 4 sunt vizibile implicit, restul apar la „Mai multe lucrări". */
 export const lucrari: Lucrare[] = [
+  {
+    src: imgBlocRediu,
+    alt: 'Bloc de locuințe finalizat la exterior, Rediu, județul Iași',
+    title: 'Bloc de locuințe din Rediu, jud. Iași',
+    meta: 'CONSTRUCȚII CIVILE · JUD. IAȘI',
+  },
   {
     src: imgBloc,
     alt: 'Bloc de locuințe finalizat la exterior, județul Iași',
@@ -51,11 +57,5 @@ export const lucrari: Lucrare[] = [
     alt: 'Cămin de vane pentru rețea de utilități în execuție',
     title: 'Rețele edilitare',
     meta: 'GOSPODĂRIE COMUNALĂ',
-  },
-  {
-    src: imgBlocRediu,
-    alt: 'Bloc de locuințe finalizat la exterior, Rediu, județul Iași',
-    title: 'Bloc de locuințe din Rediu, jud. Iași',
-    meta: 'CONSTRUCȚII CIVILE · JUD. IAȘI',
   },
 ];

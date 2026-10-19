@@ -1,6 +1,10 @@
 ---
 import { Image } from 'astro:assets';
 import { lucrari } from '../data/lucrari';
+
+const VIZIBILE_IMPLICIT = 4;
+const vizibile = lucrari.slice(0, VIZIBILE_IMPLICIT);
+const extra = lucrari.slice(VIZIBILE_IMPLICIT);
 ---
 
 <section id="lucrari" data-screen-label="Lucrări" class="lucrari">
@@ -12,7 +16,7 @@ import { lucrari } from '../data/lucrari';
 
   <div class="lucrari__grid">
     {
-      lucrari.map((w) => (
+      vizibile.map((w) => (
         <figure class="lucrari__figure">
           <div class="lucrari__image-frame">
             <Image
@@ -31,6 +35,42 @@ import { lucrari } from '../data/lucrari';
         </figure>
       ))
     }
+    {extra.length > 0 && (
+      <details class="lucrari__more">
+        <summary class="lucrari__more-toggle">
+          <span class="lucrari__more-label lucrari__more-label--closed">Mai multe lucrări</span>
+          <span class="lucrari__more-label lucrari__more-label--open">Arată mai puține</span>
+          <svg class="lucrari__chevron" width="18" height="18" viewBox="0 0 14 14" aria-hidden="true">
+            <path
+              d="M3 5l4 4 4-4"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </summary>
+        {extra.map((w) => (
+          <figure class="lucrari__figure">
+            <div class="lucrari__image-frame">
+              <Image
+                src={w.src}
+                alt={w.alt}
+                widths={[400, 675]}
+                sizes="(max-width: 1059px) 50vw, 380px"
+                loading="lazy"
+                class="lucrari__image"
+              />
+            </div>
+            <figcaption class="lucrari__caption">
+              <div class="lucrari__caption-title">{w.title}</div>
+              <div class="lucrari__caption-meta">{w.meta}</div>
+            </figcaption>
+          </figure>
+        ))}
+      </details>
+    )}
   </div>
 </section>
 
@@ -95,5 +135,68 @@ import { lucrari } from '../data/lucrari';
     font-size: 12.5px;
     color: var(--color-muted);
     letter-spacing: 0.02em;
+  }
+
+  .lucrari__more {
+    display: contents;
+  }
+
+  .lucrari__more-toggle {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 160px;
+    border: 1.5px dashed rgba(23, 25, 29, 0.3);
+    border-radius: var(--radius-card);
+    background: #fff;
+    color: var(--color-tech-blue);
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 15px;
+    text-align: center;
+    padding: 24px;
+    transition:
+      border-color 150ms ease,
+      color 150ms ease;
+  }
+
+  .lucrari__more-toggle::-webkit-details-marker {
+    display: none;
+  }
+
+  .lucrari__more-toggle:hover {
+    border-color: var(--color-tech-blue);
+    color: var(--color-accent-ink);
+  }
+
+  .lucrari__more-toggle:focus-visible {
+    outline: 2px solid var(--color-tech-blue);
+    outline-offset: 2px;
+    border-radius: 3px;
+  }
+
+  .lucrari__more-label--open {
+    display: none;
+  }
+
+  .lucrari__more[open] .lucrari__more-label--closed {
+    display: none;
+  }
+
+  .lucrari__more[open] .lucrari__more-label--open {
+    display: inline;
+  }
+
+  .lucrari__chevron {
+    flex-shrink: 0;
+    transition: transform 150ms ease;
+  }
+
+  .lucrari__more[open] .lucrari__chevron {
+    transform: rotate(180deg);
   }
 </style>
