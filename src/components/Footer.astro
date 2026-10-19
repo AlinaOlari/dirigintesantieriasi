@@ -1,5 +1,5 @@
 ---
-import { contact, missingData } from '../config/site';
+import { contact } from '../config/site';
 
 const year = new Date().getFullYear();
 ---
@@ -9,8 +9,7 @@ const year = new Date().getFullYear();
     <div>
       <div class="footer__brand">Adrian Olari</div>
       <div class="footer__brand-text">Dirigenție de șantier · RTE<br />Consultanță tehnică · Iași</div>
-      <p class="footer__todo">{missingData.iscAuthorizationNumber}</p>
-      <p class="footer__todo">{missingData.companyLegalInfo}</p>
+      <!-- TODO: afișează aici nr. autorizație ISC și CUI/denumire firmă, odată primite — vezi missingData în src/config/site.ts -->
     </div>
     <div class="footer__col">
       <div class="footer__label">CONTACT</div>
@@ -63,18 +62,6 @@ const year = new Date().getFullYear();
     font-size: 14.5px;
     color: var(--color-muted);
     line-height: 1.6;
-  }
-
-  .footer__todo {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--color-accent-ink);
-    background: #fff;
-    border: 1px dashed rgba(227, 181, 5, 0.55);
-    padding: 6px 10px;
-    border-radius: 6px;
-    display: inline-block;
-    margin: 10px 8px 0 0;
   }
 
   .footer__col {

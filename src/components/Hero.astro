@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import heroImage from '../assets/images/adrian-hero.webp';
-import { contact, missingData } from '../config/site';
+import { contact } from '../config/site';
 ---
 
 <section id="acasa" data-screen-label="Hero" class="hero">
@@ -35,7 +35,7 @@ import { contact, missingData } from '../config/site';
       />
     </div>
     <div class="hero__badge">AUTORIZAT ISC</div>
-    <p class="hero__isc-todo">{missingData.iscAuthorizationNumber}</p>
+    <!-- TODO: afișează aici numărul autorizației ISC, lângă badge, odată primit de la client — vezi missingData.iscAuthorizationNumber în src/config/site.ts -->
   </div>
 </section>
 
@@ -192,25 +192,4 @@ import { contact, missingData } from '../config/site';
     box-shadow: var(--shadow-badge);
   }
 
-  .hero__isc-todo {
-    position: absolute;
-    bottom: -14px;
-    right: 0;
-    margin: 0;
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--color-accent-ink);
-    background: #fff;
-    border: 1px dashed rgba(227, 181, 5, 0.55);
-    padding: 6px 10px;
-    border-radius: 6px;
-  }
-
-  @media (max-width: 1059px) {
-    .hero__isc-todo {
-      position: static;
-      display: inline-block;
-      margin-top: 24px;
-    }
-  }
 </style>
